@@ -1,8 +1,10 @@
+import 'package:crypto_manager/modules/search_delegates.dart';
+import 'package:crypto_manager/widgets/currency_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'models/currency.dart';
-import 'modules/currency_prisenter.dart';
+import '../models/currency.dart';
+import '../modules/currency_prisenter.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -31,9 +33,15 @@ class _HomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Currency Converter'),
-        ),
+        appBar: AppBar(title: const Text('Currency Converter'), actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => {
+              showSearch(
+                  context: context, delegate: MySearchDelegates(_currencies))
+            },
+          )
+        ]),
         body: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -47,38 +55,7 @@ class _HomePageState extends State<MyHomePage>
 
   Widget _getRowWithDivider(int i) {
     final Currency currency = _currencies[i];
-    var children = <Widget>[
-      Padding(
-          padding: const EdgeInsets.all(5), child: _getListItemUI(currency)),
-      const Divider(height: 5),
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: children,
-    );
-  }
-
-  ListTile _getListItemUI(Currency currency) {
-    final price = currency.price;
-    final text = "$price\$";
-    return ListTile(
-      leading: FadeInImage(
-        image: NetworkImage(
-          "https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@bea1a9722a8c63169dcc06e86182bf2c55a76bbc/32@2x/color/" +
-              currency.symbol.toLowerCase() +
-              "@2x.png",
-        ),
-        placeholder: const NetworkImage("assets\\question mark.png"),
-      ),
-      title: Text(
-        currency.name,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: RichText(
-        text: TextSpan(text: text),
-      ),
-    );
+    return CurrencyWidget(currency: currency);
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:crypto_manager/dependency_injection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'pages/home_page.dart';
 
 void main() async {
   Injector.configure(Flavor.mock);
