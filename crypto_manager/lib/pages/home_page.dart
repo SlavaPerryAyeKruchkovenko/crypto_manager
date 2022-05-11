@@ -1,5 +1,6 @@
 import 'package:crypto_manager/modules/search_delegates.dart';
 import 'package:crypto_manager/widgets/currency_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -17,8 +18,9 @@ class _HomePageState extends State<MyHomePage>
     implements CurrencyListViewContract {
   late CurrencyListPresenter _presenter;
   List<Currency> _currencies = List.empty();
+  List<Currency> _usedCurrencies = List.empty();
   bool _isLoading = false;
-
+  bool _isLikeClick = false;
   _HomePageState() {
     _presenter = CurrencyListPresenter(this);
   }
@@ -33,24 +35,21 @@ class _HomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Currency Converter'), actions: [
-        IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () => {
-            showSearch(
-                context: context, delegate: MySearchDelegates(_currencies))
-          },
-        )
-      ]),
+      appBar: _getAppBar(),
       body: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                value: 0,
+              ),
             )
-          : ListView.builder(
-              itemCount: _currencies.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  _getRowWithDivider(index),
-            ),
+          : _usedCurrencies.isEmpty
+              ? _getNotFoundResult()
+              : ListView.builder(
+                  itemCount: _usedCurrencies.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _getRowWithDivider(index);
+                  },
+                ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       extendBody: true,
       bottomNavigationBar: BottomAppBar(
@@ -58,24 +57,62 @@ class _HomePageState extends State<MyHomePage>
         color: Colors.blue,
         child: Row(
           children: [
-            //add_alert_outlined
-            IconButton(
-              icon: const Icon(Icons.favorite_border),
-              onPressed: () {},
-            )
+            _getLikeSortBtn(),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {},
       ),
     );
   }
 
+  PreferredSizeWidget _getAppBar() {
+    return AppBar(title: const Text('Currency Converter'), actions: [
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () => {
+          showSearch(
+              context: context, delegate: MySearchDelegates(_usedCurrencies))
+        },
+      )
+    ]);
+  }
+
+  Widget _getLikeSortBtn() {
+    return IconButton(
+      icon: Icon(
+        _isLikeClick ? Icons.favorite : Icons.favorite_border_sharp,
+        color: _isLikeClick ? Colors.pink : Colors.black,
+      ),
+      onPressed: () {
+        setState(() {
+          if (!_isLikeClick) {
+            _usedCurrencies =
+                _usedCurrencies.where((x) => x.isFavorite).toList();
+            _isLikeClick = true;
+          } else {
+            _usedCurrencies = _currencies;
+            _isLikeClick = false;
+          }
+        });
+      },
+    );
+  }
+
   Widget _getRowWithDivider(int i) {
-    final Currency currency = _currencies[i];
+    final Currency currency = _usedCurrencies[i];
     return CurrencyWidget(currency: currency);
+  }
+
+  Widget _getNotFoundResult() {
+    return const Center(
+      child: Text(
+        "Data not found",
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
   @override
@@ -83,6 +120,7 @@ class _HomePageState extends State<MyHomePage>
     setState(() {
       _currencies = items;
       _isLoading = false;
+      _usedCurrencies = _currencies;
     });
   }
 

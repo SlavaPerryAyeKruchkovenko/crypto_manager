@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:crypto_manager/models/currency.dart';
 
 import '../currency_repository.dart';
+import '../rate.dart';
 
 class MockCurrencyRepository implements CurrencyRepository {
   @override
@@ -12,7 +13,8 @@ class MockCurrencyRepository implements CurrencyRepository {
 }
 
 var currencies = <Currency>[
-  Currency("Bitcoin", 228.0, "btc"),
-  Currency("Ethereum", 14.88, "eth"),
-  Currency("Ripple", 300.00, "xrp"),
+  Currency("Bitcoin", Rate(course: 228.28), "btc", true),
+  Currency("Ethereum", Rate(course: 14.88), "eth", true),
+  Currency("Ripple", Rate(course: 300.01), "xrp", false),
+  Currency("Dollar", Rate(course: 1), "usd", true),
 ];
