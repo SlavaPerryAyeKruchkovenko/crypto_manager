@@ -14,11 +14,11 @@ class MockCurrencyRepository implements CurrencyRepository {
 
 var currencies = <Currency>[
   Currency("Bitcoin", "btc", true,
-      rates: [Rate(DateTime.now(), course: 228.28)]),
+      rates: [Rate(date: DateTime.now(), course: 228.28)]),
   Currency("Ethereum", "eth", true,
-      rates: [Rate(DateTime.now(), course: 14.88)]),
+      rates: [Rate(date: DateTime.now(), course: 14.88)]),
   Currency("Ripple", "xrp", false,
-      rates: [Rate(DateTime.now(), course: 300.01)]),
+      rates: [Rate(date: DateTime.now(), course: 300.01)]),
   Currency("Dollar", "usd", true,
-      rates: [Rate(DateTime.now(), course: 300.01)]),
+      rates: [Rate(date: DateTime.now(), course: 300.01)]),
 ];
