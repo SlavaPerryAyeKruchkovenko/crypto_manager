@@ -4,7 +4,7 @@ import 'package:crypto_manager/models/rate.dart';
 class Currency {
   String name;
   String shortName;
-  Inflation? inflation;
+  List<Inflation>? inflation;
   Rate rate;
   bool isFavorite;
 

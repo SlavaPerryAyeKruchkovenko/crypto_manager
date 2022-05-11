@@ -23,9 +23,9 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
   }
 
   Widget _getCurrienceImage() {
-    final price = widget.currency.rate.course;
-    final date = widget.currency.rate.date;
-    var text = "$price\$" + (date == null ? "" : "date: $date");
+    final price = widget.currency.rates.first.course;
+    final date = widget.currency.rates.first.date;
+    var text = "$price\$ date: $date";
     return ListTile(
       leading: FadeInImage(
         image: NetworkImage(
