@@ -1,4 +1,5 @@
 import 'package:crypto_manager/models/currency.dart';
+import 'package:crypto_manager/pages/currency_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -27,6 +28,14 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
     final date = widget.currency.rates.first.date;
     var text = "$price\$ date: $date";
     return ListTile(
+      onTap: () => {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CurrencyPage(
+                      currency: widget.currency,
+                    )))
+      },
       leading: FadeInImage(
         image: NetworkImage(
           "https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@bea1a9722a8c63169dcc06e86182bf2c55a76bbc/32@2x/color/" +
