@@ -1,3 +1,5 @@
+import '../bank.dart';
+
 abstract class User {
   final String name;
   User(this.name);
@@ -8,7 +10,8 @@ class Admin extends User {
 }
 
 class BankAdmin extends User {
-  BankAdmin(String name) : super(name);
+  final Bank bank;
+  BankAdmin(String name, this.bank) : super(name);
 }
 
 class Client extends User {

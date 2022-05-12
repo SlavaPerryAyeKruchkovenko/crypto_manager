@@ -20,5 +20,5 @@ var currencies = <Currency>[
   Currency("Ripple", "xrp", false,
       rates: [Rate(date: DateTime.now(), course: 300.01)]),
   Currency("Dollar", "usd", true,
-      rates: [Rate(date: DateTime.now(), course: 300.01)]),
+      rates: [Rate(date: DateTime.now(), course: 1)]),
 ];
