@@ -11,13 +11,7 @@ class Currency {
   bool isFavorite;
 
   Currency(this.name, this.shortName, this.isFavorite,
-      {this.inflations, required List<Rate> rates, this.allowedBanks}) {
-    if (rates.isNotEmpty) {
-      this.rates = rates;
-    } else {
-      throw Exception("Rates can't be empty");
-    }
-  }
+      {this.inflations, required this.rates, this.allowedBanks});
 
   void like() {
     isFavorite = true;
