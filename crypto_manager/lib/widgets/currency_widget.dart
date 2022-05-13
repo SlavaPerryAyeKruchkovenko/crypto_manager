@@ -1,4 +1,5 @@
 import 'package:crypto_manager/models/currency.dart';
+import 'package:crypto_manager/models/rate.dart';
 import 'package:crypto_manager/pages/currency_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -23,9 +24,19 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
     ]);
   }
 
+  double _cnvrtData(Rate rate) {
+    return rate.date!.year +
+        0.1 * rate.date!.month +
+        0.01 * rate.date!.day +
+        0.001 * rate.date!.hour;
+  }
+
   Widget _getCurrienceImage() {
+    widget.currency.rates
+        .sort((x, y) => _cnvrtData(y).compareTo(_cnvrtData(x)));
     final price = widget.currency.rates.first.course;
     final date = widget.currency.rates.first.date;
+
     var text = "$price\$ date: $date";
     return ListTile(
       onTap: () => {

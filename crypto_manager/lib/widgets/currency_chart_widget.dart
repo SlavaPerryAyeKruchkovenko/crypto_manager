@@ -37,12 +37,11 @@ class _CurrencyChartState extends State<CurrencyChart> {
       return rates.where((x) =>
           x.date != null &&
           (x.date!.year == now.year ||
-              (x.date!.year == now.year - 1 && x.date!.month < now.month)));
+              (x.date!.year == now.year - 1 && x.date!.month > now.month)));
     }
 
     double _parseDateToNum(DateTime date, DateTime now) {
-      double res = 0;
-      res = ((date.month + now.month) % 12) as double;
+      double res = ((date.month + 11 - now.month) % 12) as double;
       var firstDayThisMonth = DateTime(date.year, date.month, date.day);
       var firstDayNextMonth = DateTime(firstDayThisMonth.year,
           firstDayThisMonth.month + 1, firstDayThisMonth.day);
