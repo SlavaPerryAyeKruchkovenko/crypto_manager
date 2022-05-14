@@ -18,34 +18,75 @@ class CurrencyChart extends StatefulWidget {
 
 class _CurrencyChartState extends State<CurrencyChart> {
   var now = DateTime.now();
+  final gradient = const LinearGradient(colors: [
+    Color(0xff23b6e6),
+    Color(0xff02d39a),
+  ], begin: Alignment.topLeft, end: Alignment.bottomRight);
   @override
   Widget build(BuildContext context) {
-    final maxY = widget.rates.map((e) => e.course).reduce(max);
+    final maxY = 1.1 * widget.rates.map((e) => e.course).reduce(max);
     return LineChart(LineChartData(
       minX: 0,
       maxX: 12,
       minY: 0,
       maxY: maxY,
-      gridData: FlGridData(
-        show: true,
-        getDrawingHorizontalLine: (value) => FlLine(
-          color: Colors.blue,
-          strokeWidth: 5,
-        ),
-        drawVerticalLine: false,
-      ),
+      titlesData: _getTitleData(),
+      gridData: _getGridData(),
       borderData: FlBorderData(
         show: true,
         border: Border.all(color: Colors.blue, width: 1),
       ),
       lineBarsData: [
         LineChartBarData(
-          spots: _getData(widget.rates, now),
-          isCurved: true,
-          color: Colors.blue,
-        )
+            spots: _getData(widget.rates, now),
+            isCurved: true,
+            gradient: gradient,
+            barWidth: 6,
+            belowBarData: BarAreaData(
+                show: true,
+                gradient: LinearGradient(colors: [
+                  const Color(0xff23b6e6).withOpacity(0.3),
+                  const Color(0xff02d39a).withOpacity(0.3),
+                ], begin: Alignment.topLeft, end: Alignment.bottomRight)))
       ],
     ));
+  }
+
+  FlTitlesData _getTitleData() {
+    String _getData(String value) {
+      switch (value) {
+        case '2':
+          return 'MAR';
+        case '5':
+          return 'JUN';
+        case '8':
+          return 'SEP';
+        case '11':
+          return 'DEC';
+      }
+      return '';
+    }
+
+    return FlTitlesData(
+        show: true,
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 35,
+            getTitlesWidget: (value, meta) => Text(_getData(value.toString())),
+          ),
+        ));
+  }
+
+  FlGridData _getGridData() {
+    return FlGridData(
+      show: true,
+      getDrawingHorizontalLine: (value) => FlLine(
+        color: Colors.blueGrey,
+        strokeWidth: 2,
+      ),
+      drawVerticalLine: false,
+    );
   }
 
   List<FlSpot> _getData(List<Rate> rates, DateTime now) {

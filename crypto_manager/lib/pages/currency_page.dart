@@ -28,9 +28,7 @@ class _CurrencyPageState extends State<CurrencyPage> {
         children: [
           currency.rates.isEmpty
               ? _getDataNotFound(currency)
-              : CurrencyChart(
-                  rates: currency.rates,
-                ),
+              : _getChart(currency),
         ],
       ),
     );
@@ -39,6 +37,22 @@ class _CurrencyPageState extends State<CurrencyPage> {
   AppBar _getAppBar() {
     return AppBar(
         title: const Text('Currency information2'), actions: const []);
+  }
+
+  Widget _getChart(Currency currency) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      color: const Color(0xF1000437),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: CurrencyChart(
+          rates: currency.rates,
+        ),
+      ),
+    );
   }
 
   Widget _getDataNotFound(Currency currency) {

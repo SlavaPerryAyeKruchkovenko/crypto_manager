@@ -1,5 +1,4 @@
 import 'package:crypto_manager/models/currency.dart';
-import 'package:crypto_manager/models/rate.dart';
 import 'package:crypto_manager/pages/currency_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -22,14 +21,6 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
       ),
       const Divider(height: 5),
     ]);
-  }
-
-  //Convert date time to number for
-  double _cnvrtData(Rate rate) {
-    return rate.date!.year +
-        0.1 * rate.date!.month +
-        0.01 * rate.date!.day +
-        0.001 * rate.date!.hour;
   }
 
   Widget _getCurrienceImage() {
