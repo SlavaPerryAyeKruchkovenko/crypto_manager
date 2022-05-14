@@ -3,6 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+
 class CurrencyChart extends StatefulWidget {
   final List<Rate> rates;
   const CurrencyChart({
@@ -24,9 +26,23 @@ class _CurrencyChartState extends State<CurrencyChart> {
       maxX: 12,
       minY: 0,
       maxY: maxY,
+      gridData: FlGridData(
+        show: true,
+        getDrawingHorizontalLine: (value) => FlLine(
+          color: Colors.blue,
+          strokeWidth: 5,
+        ),
+        drawVerticalLine: false,
+      ),
+      borderData: FlBorderData(
+        show: true,
+        border: Border.all(color: Colors.blue, width: 1),
+      ),
       lineBarsData: [
         LineChartBarData(
           spots: _getData(widget.rates, now),
+          isCurved: true,
+          color: Colors.blue,
         )
       ],
     ));

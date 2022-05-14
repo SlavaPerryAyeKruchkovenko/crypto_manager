@@ -24,6 +24,7 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
     ]);
   }
 
+  //Convert date time to number for
   double _cnvrtData(Rate rate) {
     return rate.date!.year +
         0.1 * rate.date!.month +
@@ -32,8 +33,7 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
   }
 
   Widget _getCurrienceImage() {
-    widget.currency.rates
-        .sort((x, y) => _cnvrtData(y).compareTo(_cnvrtData(x)));
+    widget.currency.rates.sort((x, y) => y.date!.compareTo(x.date!));
     final price = widget.currency.rates.first.course;
     final date = widget.currency.rates.first.date;
 
