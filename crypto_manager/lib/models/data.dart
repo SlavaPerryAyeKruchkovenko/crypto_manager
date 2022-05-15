@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 abstract class Data {
   final DateTime? date;
   final double value;
@@ -5,7 +7,10 @@ abstract class Data {
 
   @override
   String toString() {
-    String dateT = date == null ? "" : "data: $date ";
+    //DateFormat.yMMMMd()
+    String dateT = date == null
+        ? ""
+        : "data: " + DateFormat.yMMMMd().format(date!).toUpperCase() + " ";
     return dateT;
   }
 }
