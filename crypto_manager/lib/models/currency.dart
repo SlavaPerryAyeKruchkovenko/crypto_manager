@@ -1,6 +1,6 @@
 import 'package:crypto_manager/models/bank.dart';
-import 'package:crypto_manager/models/inflation.dart';
-import 'package:crypto_manager/models/rate.dart';
+
+import 'data.dart';
 
 class Currency {
   String name;

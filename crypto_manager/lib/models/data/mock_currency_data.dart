@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:crypto_manager/models/currency.dart';
 
 import '../currency_repository.dart';
-import '../rate.dart';
+import '../data.dart';
 
 class MockCurrencyRepository implements CurrencyRepository {
   @override
@@ -29,4 +29,6 @@ var currencies = <Currency>[
       rates: [Rate(date: DateTime.now(), course: 300.01)]),
   Currency("Dollar", "usd", true,
       rates: [Rate(date: DateTime.now(), course: 1)]),
+  Currency("Ruble", "rub", true,
+      rates: [Rate(date: DateTime.now(), course: 0.01492537313)]),
 ];

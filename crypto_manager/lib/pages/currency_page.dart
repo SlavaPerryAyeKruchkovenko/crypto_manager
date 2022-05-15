@@ -35,17 +35,17 @@ class _CurrencyPageState extends State<CurrencyPage> {
   }
 
   AppBar _getAppBar() {
-    return AppBar(
-        title: const Text('Currency information2'), actions: const []);
+    return AppBar(title: const Text('Currency information'), actions: const []);
   }
 
   Widget _getChart(Currency currency) {
     return Card(
+      margin: const EdgeInsets.all(16),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      color: const Color(0xF1000437),
+      color: Colors.amber[100],
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: CurrencyChart(

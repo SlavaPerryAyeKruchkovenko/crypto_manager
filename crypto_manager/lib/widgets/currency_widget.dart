@@ -25,10 +25,9 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
 
   Widget _getCurrienceImage() {
     widget.currency.rates.sort((x, y) => y.date!.compareTo(x.date!));
-    final price = widget.currency.rates.first.course;
-    final date = widget.currency.rates.first.date;
+    final rate = widget.currency.rates.first;
 
-    var text = "$price\$ date: $date";
+    var text = rate.toString();
     return ListTile(
       onTap: () => {
         Navigator.push(
@@ -38,20 +37,19 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
                       currency: widget.currency,
                     )))
       },
-      leading: FadeInImage(
-        image: NetworkImage(
-          "https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@bea1a9722a8c63169dcc06e86182bf2c55a76bbc/32@2x/color/" +
-              widget.currency.shortName.toLowerCase() +
-              "@2x.png",
-        ),
-        placeholder: const NetworkImage("assets\\question mark.png"),
-      ),
+      leading: FadeInImage.assetNetwork(
+          placeholder: 'assets/images/question_mark.png',
+          image:
+              "https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@bea1a9722a8c63169dcc06e86182bf2c55a76bbc/32@2x/color/" +
+                  widget.currency.shortName.toLowerCase() +
+                  "@2x.png"),
       title: Text(
         widget.currency.name,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
       ),
       subtitle: RichText(
-        text: TextSpan(text: text),
+        text: TextSpan(text: text, style: const TextStyle(color: Colors.black)),
       ),
       trailing: _getLikeWidget(),
     );

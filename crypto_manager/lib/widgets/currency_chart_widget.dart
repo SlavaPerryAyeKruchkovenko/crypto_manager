@@ -1,9 +1,10 @@
-import 'package:crypto_manager/models/rate.dart';
+import 'package:crypto_manager/models/data.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CurrencyChart extends StatefulWidget {
   final List<Rate> rates;
@@ -18,53 +19,52 @@ class CurrencyChart extends StatefulWidget {
 
 class _CurrencyChartState extends State<CurrencyChart> {
   var now = DateTime.now();
-  final gradient = const LinearGradient(colors: [
-    Color(0xff23b6e6),
-    Color(0xff02d39a),
+  var gradient = const LinearGradient(colors: [
+    Colors.orangeAccent,
+    Colors.redAccent,
+    Colors.yellowAccent,
   ], begin: Alignment.topLeft, end: Alignment.bottomRight);
   @override
   Widget build(BuildContext context) {
-    final maxY = 1.1 * widget.rates.map((e) => e.course).reduce(max);
+    final maxY = 1.1 * widget.rates.map((e) => e.value).reduce(math.max);
     return LineChart(LineChartData(
-      minX: 0,
-      maxX: 12,
-      minY: 0,
+      minX: 0.0,
+      maxX: 12.0,
+      minY: 0.0,
       maxY: maxY,
       titlesData: _getTitleData(),
       gridData: _getGridData(),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: Colors.blue, width: 1),
+        border: Border.all(color: Colors.blue, width: 1.0),
       ),
       lineBarsData: [
         LineChartBarData(
             spots: _getData(widget.rates, now),
             isCurved: true,
             gradient: gradient,
-            barWidth: 6,
+            barWidth: 6.0,
             belowBarData: BarAreaData(
                 show: true,
                 gradient: LinearGradient(colors: [
-                  const Color(0xff23b6e6).withOpacity(0.3),
-                  const Color(0xff02d39a).withOpacity(0.3),
+                  Colors.orangeAccent.withOpacity(0.3),
+                  Colors.redAccent.withOpacity(0.3),
+                  Colors.yellowAccent.withOpacity(0.3),
                 ], begin: Alignment.topLeft, end: Alignment.bottomRight)))
       ],
     ));
   }
 
   FlTitlesData _getTitleData() {
-    String _getData(String value) {
-      switch (value) {
-        case '2':
-          return 'MAR';
-        case '5':
-          return 'JUN';
-        case '8':
-          return 'SEP';
-        case '11':
-          return 'DEC';
+    String _getData(double value) {
+      final now = DateTime.now().month.toDouble();
+      final res = ((value + now) % 12);
+      if (res.round() - res == 0) {
+        return DateFormat('MMM')
+            .format(DateTime(0, res.round() + 1))
+            .toUpperCase();
       }
-      return '';
+      return "";
     }
 
     return FlTitlesData(
@@ -72,8 +72,8 @@ class _CurrencyChartState extends State<CurrencyChart> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 35,
-            getTitlesWidget: (value, meta) => Text(_getData(value.toString())),
+            reservedSize: 35.0,
+            getTitlesWidget: (value, meta) => Text(_getData(value)),
           ),
         ));
   }
@@ -83,7 +83,7 @@ class _CurrencyChartState extends State<CurrencyChart> {
       show: true,
       getDrawingHorizontalLine: (value) => FlLine(
         color: Colors.blueGrey,
-        strokeWidth: 2,
+        strokeWidth: 2.0,
       ),
       drawVerticalLine: false,
     );
@@ -98,7 +98,7 @@ class _CurrencyChartState extends State<CurrencyChart> {
     }
 
     double _parseDateToNum(DateTime date, DateTime now) {
-      double res = ((date.month + 11 - now.month) % 12) as double;
+      double res = (date.month + 11 - now.month) % 12;
       var firstDayThisMonth = DateTime(date.year, date.month, date.day);
       var firstDayNextMonth = DateTime(firstDayThisMonth.year,
           firstDayThisMonth.month + 1, firstDayThisMonth.day);
@@ -111,7 +111,7 @@ class _CurrencyChartState extends State<CurrencyChart> {
     final spots = <FlSpot>[];
     for (var rate in _getCorrectData(rates, now)) {
       if (rate.date != null) {
-        final spot = FlSpot(_parseDateToNum(rate.date!, now), rate.course);
+        final spot = FlSpot(_parseDateToNum(rate.date!, now), rate.value);
         spots.add(spot);
       }
     }
