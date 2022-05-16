@@ -19,35 +19,42 @@ class _CurrencyPageState extends State<CurrencyPage> {
     //_isLoading = true;
   }
 
-  int index = 0;
+  int _index = 0;
   @override
   Widget build(BuildContext context) {
     final currency = widget.currency;
     return Scaffold(
       appBar: _getAppBar(),
-      body: IndexedStack(
-        index: index,
+      body: ListView(
         children: [
-          currency.rates.isEmpty
-              ? _getDataNotFound(currency, "rates")
-              : _getChart(currency.rates),
-          currency.inflations == null || currency.inflations!.isEmpty
-              ? _getDataNotFound(currency, "inflations")
-              : _getChart(currency.inflations!),
+          SizedBox(
+            height: 720,
+            child: IndexedStack(
+              index: _index,
+              children: [
+                currency.rates.isEmpty
+                    ? _getDataNotFound(currency, "rates")
+                    : _getChart(currency.rates),
+                currency.inflations == null || currency.inflations!.isEmpty
+                    ? _getDataNotFound(currency, "inflations")
+                    : _getChart(currency.inflations!),
+              ],
+            ),
+          )
         ],
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         color: Colors.blue,
         child: Row(
-          children: [Text("$index")],
+          children: [Text("$_index")],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(index == 0 ? Icons.navigate_next : Icons.navigate_before),
+        child: Icon(_index == 0 ? Icons.navigate_next : Icons.navigate_before),
         onPressed: () {
           setState(() {
-            index = (index + 1) % 2;
+            _index = (_index + 1) % 2;
           });
         },
       ),
@@ -68,11 +75,18 @@ class _CurrencyPageState extends State<CurrencyPage> {
       ),
       color: Colors.amber[100],
       child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: CurrencyChart(
-          rates: data,
-        ),
-      ),
+          padding: const EdgeInsets.all(16),
+          child: Stack(children: [
+            Center(
+              child: Text(
+                data.first.name + "s",
+                style: TextStyle(color: Colors.redAccent[900], fontSize: 24),
+              ),
+            ),
+            CurrencyChart(
+              rates: data,
+            ),
+          ])),
     );
   }
 

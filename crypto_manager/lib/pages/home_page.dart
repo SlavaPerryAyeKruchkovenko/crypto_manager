@@ -48,7 +48,6 @@ class _HomePageState extends State<MyHomePage>
           ? Center(
               child: CircularProgressIndicator(
                 value: controller.value,
-                semanticsLabel: "hello",
               ),
             )
           : _usedCurrencies.isEmpty
