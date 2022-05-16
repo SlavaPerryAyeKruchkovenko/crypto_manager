@@ -1,15 +1,17 @@
-import 'package:crypto_manager/models/inflation.dart';
-import 'package:crypto_manager/models/rate.dart';
+import 'package:crypto_manager/models/bank.dart';
+
+import 'data.dart';
 
 class Currency {
   String name;
   String shortName;
-  Inflation? inflation;
-  Rate rate;
+  List<Inflation>? inflations;
+  late List<Rate> rates;
+  List<Bank>? allowedBanks;
   bool isFavorite;
 
-  Currency(this.name, this.rate, this.shortName, this.isFavorite,
-      {this.inflation});
+  Currency(this.name, this.shortName, this.isFavorite,
+      {this.inflations, required this.rates, this.allowedBanks});
 
   void like() {
     isFavorite = true;
@@ -21,8 +23,7 @@ class Currency {
 
   Currency.fromMap(Map<String, dynamic> map)
       : name = map['name'],
-        rate = map['rate'],
         shortName = map['symbol'],
-        inflation = map['inflation'],
+        inflations = null,
         isFavorite = map['like'];
 }

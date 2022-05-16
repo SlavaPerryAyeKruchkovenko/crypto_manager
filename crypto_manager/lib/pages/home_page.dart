@@ -15,12 +15,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<MyHomePage>
+    with TickerProviderStateMixin
     implements CurrencyListViewContract {
   late CurrencyListPresenter _presenter;
   List<Currency> _currencies = List.empty();
   List<Currency> _usedCurrencies = List.empty();
   bool _isLoading = false;
   bool _isLikeClick = false;
+  late AnimationController controller;
   _HomePageState() {
     _presenter = CurrencyListPresenter(this);
   }
@@ -30,6 +32,12 @@ class _HomePageState extends State<MyHomePage>
     super.initState();
     _isLoading = true;
     _presenter.loadCurrencies();
+    controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    controller.addListener(() {
+      setState(() {});
+    });
+    controller.repeat(reverse: false);
   }
 
   @override
@@ -37,9 +45,10 @@ class _HomePageState extends State<MyHomePage>
     return Scaffold(
       appBar: _getAppBar(),
       body: _isLoading
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(
-                value: 0,
+                value: controller.value,
+                semanticsLabel: "hello",
               ),
             )
           : _usedCurrencies.isEmpty
@@ -62,7 +71,7 @@ class _HomePageState extends State<MyHomePage>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.update),
         onPressed: () {},
       ),
     );
@@ -119,8 +128,9 @@ class _HomePageState extends State<MyHomePage>
   void onLoadCryptoComplete(List<Currency> items) {
     setState(() {
       _currencies = items;
-      _isLoading = false;
       _usedCurrencies = _currencies;
+      _isLoading = false;
+      controller.dispose();
     });
   }
 
