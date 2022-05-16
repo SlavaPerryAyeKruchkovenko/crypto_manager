@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CurrencyChart extends StatefulWidget {
-  final List<Rate> rates;
+  final List<Data> rates;
   const CurrencyChart({
     required this.rates,
     Key? key,
@@ -56,7 +56,7 @@ class _CurrencyChartState extends State<CurrencyChart> {
   }
 
   FlTitlesData _getTitleData() {
-    String _getData(double value) {
+    String _getBottomTitle(double value) {
       final now = DateTime.now().month.toDouble();
       final res = ((value + now) % 12);
       if (res.round() - res == 0) {
@@ -67,13 +67,52 @@ class _CurrencyChartState extends State<CurrencyChart> {
       return "";
     }
 
+    String _getLeftTitle(double value) {
+      return value.toString().length > 5
+          ? value.toStringAsExponential(2)
+          : value.toString();
+    }
+
+    Widget _getLeftWidget(double value, TitleMeta meta) {
+      Widget text = Text(
+        _getLeftTitle(value),
+        style: const TextStyle(
+            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+      );
+      bool isBigDifirent = (meta.max / meta.appliedInterval -
+              (meta.max / meta.appliedInterval).ceil()) <
+          0.5;
+      return Container(
+        margin: meta.max == value && isBigDifirent
+            ? const EdgeInsets.fromLTRB(0, 0, 0, 10)
+            : EdgeInsets.zero,
+        alignment: Alignment.centerLeft,
+        child: text,
+      );
+    }
+
     return FlTitlesData(
         show: true,
+        topTitles: AxisTitles(),
+        rightTitles: AxisTitles(),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 60.0,
+            getTitlesWidget: _getLeftWidget,
+          ),
+        ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 35.0,
-            getTitlesWidget: (value, meta) => Text(_getData(value)),
+            reservedSize: 30.0,
+            getTitlesWidget: (value, meta) => Text(
+              _getBottomTitle(value),
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700),
+            ),
           ),
         ));
   }
@@ -89,8 +128,8 @@ class _CurrencyChartState extends State<CurrencyChart> {
     );
   }
 
-  List<FlSpot> _getData(List<Rate> rates, DateTime now) {
-    Iterable<Rate> _getCorrectData(List<Rate> rates, DateTime now) {
+  List<FlSpot> _getData(List<Data> rates, DateTime now) {
+    Iterable<Data> _getCorrectData(List<Data> rates, DateTime now) {
       return rates.where((x) =>
           x.date != null &&
           (x.date!.year == now.year ||

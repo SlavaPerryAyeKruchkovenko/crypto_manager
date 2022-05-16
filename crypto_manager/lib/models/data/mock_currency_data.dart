@@ -22,9 +22,15 @@ final rates = [
   Rate(course: 102, date: date3),
 ];
 var currencies = <Currency>[
-  Currency("Bitcoin", "btc", true, rates: rates),
-  Currency("Ethereum", "eth", true,
-      rates: [Rate(date: DateTime.now(), course: 14.88)]),
+  Currency("Bitcoin", "btc", true, rates: rates, inflations: [
+    Inflation(persent: 0.01, date: date1),
+    Inflation(persent: 0.03, date: date2),
+    Inflation(persent: 0.05, date: date3),
+    Inflation(persent: 0.001, date: DateTime.now()),
+  ]),
+  Currency("Ethereum", "eth", true, rates: [
+    Rate(date: DateTime.now(), course: 14.88),
+  ]),
   Currency("Ripple", "xrp", false,
       rates: [Rate(date: DateTime.now(), course: 300.01)]),
   Currency("Dollar", "usd", true,

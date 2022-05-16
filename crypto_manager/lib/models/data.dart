@@ -7,7 +7,6 @@ abstract class Data {
 
   @override
   String toString() {
-    //DateFormat.yMMMMd()
     String dateT = date == null
         ? ""
         : "data: " + DateFormat.yMMMMd().format(date!).toUpperCase() + " ";
