@@ -1,6 +1,8 @@
+import 'package:crypto_manager/models/bank.dart';
 import 'package:crypto_manager/models/currency.dart';
 import 'package:crypto_manager/models/data.dart';
 import 'package:crypto_manager/widgets/currency_chart_widget.dart';
+import 'package:flag/flag_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +42,14 @@ class _CurrencyPageState extends State<CurrencyPage> {
                     : _getChart(currency.inflations!),
               ],
             ),
+          ),
+          SizedBox(
+            height: 300,
+            child: (currency.allowedCountries ?? []).isEmpty
+                ? _getDataNotFound(currency, "allowed countries")
+                : Stack(
+                    children: _getFlags(currency.allowedCountries ?? []),
+                  ),
           )
         ],
       ),
@@ -90,6 +100,7 @@ class _CurrencyPageState extends State<CurrencyPage> {
     );
   }
 
+  ///return Text as "no [currency]'s [property] data found"
   Widget _getDataNotFound(Currency currency, String property) {
     final text = currency.name;
     return Center(
@@ -98,5 +109,31 @@ class _CurrencyPageState extends State<CurrencyPage> {
         style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );
+  }
+
+  List<Widget> _getFlags(List<Country> countries) {
+    double left = 0;
+
+    final flags = <Widget>[];
+    if (countries.isNotEmpty) {
+      for (var country in countries) {
+        if (country.shortName != null && country.shortName!.length == 2) {
+          flags.add(Positioned(
+              left: left,
+              child: Flag.fromString(
+                country.shortName!.toLowerCase(),
+                height: 30,
+                width: 30,
+              )));
+          left += 30;
+        } else {
+          flags.add(Text(
+            country.name,
+            style: const TextStyle(fontSize: 16),
+          ));
+        }
+      }
+    }
+    return flags;
   }
 }

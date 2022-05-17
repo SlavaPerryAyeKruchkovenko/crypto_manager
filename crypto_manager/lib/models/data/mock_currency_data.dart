@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:crypto_manager/models/bank.dart';
 import 'package:crypto_manager/models/currency.dart';
 
 import '../currency_repository.dart';
@@ -21,13 +22,20 @@ final rates = [
   Rate(course: 239, date: date2),
   Rate(course: 102, date: date3),
 ];
+final inf = [
+  Inflation(persent: 0.01, date: date1),
+  Inflation(persent: 0.03, date: date2),
+  Inflation(persent: 0.05, date: date3),
+  Inflation(persent: 0.001, date: DateTime.now()),
+];
+final allowedCountries = [
+  Country(name: "Russia", shortName: "ru"),
+  Country(name: "United Kingdom", shortName: "ca"),
+  Country(name: "Ukraine", shortName: 'ua'),
+];
 var currencies = <Currency>[
-  Currency("Bitcoin", "btc", true, rates: rates, inflations: [
-    Inflation(persent: 0.01, date: date1),
-    Inflation(persent: 0.03, date: date2),
-    Inflation(persent: 0.05, date: date3),
-    Inflation(persent: 0.001, date: DateTime.now()),
-  ]),
+  Currency("Bitcoin", "btc", true,
+      rates: rates, inflations: inf, allowedCountries: allowedCountries),
   Currency("Ethereum", "eth", true, rates: [
     Rate(date: DateTime.now(), course: 14.88),
   ]),
