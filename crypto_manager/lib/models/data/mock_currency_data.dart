@@ -15,8 +15,7 @@ class MockCurrencyRepository implements CurrencyRepository {
 
   @override
   Future<User> fetchUser() {
-    // TODO: implement fetchUser
-    throw Future.value(Admin("Slava"));
+    return Future.value(Admin("Slava"));
   }
 }
 

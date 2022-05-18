@@ -1,5 +1,7 @@
+import 'package:crypto_manager/models/users/user.dart';
 import 'package:crypto_manager/modules/search_delegates.dart';
 import 'package:crypto_manager/widgets/currency_widget.dart';
+import 'package:crypto_manager/widgets/home_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -22,6 +24,7 @@ class _HomePageState extends State<MyHomePage>
   List<Currency> _usedCurrencies = List.empty();
   bool _isLoading = false;
   bool _isLikeClick = false;
+  User _user = User.empty();
   late AnimationController controller;
   _HomePageState() {
     _presenter = CurrencyListPresenter(this);
@@ -32,6 +35,7 @@ class _HomePageState extends State<MyHomePage>
     super.initState();
     _isLoading = true;
     _presenter.loadCurrencies();
+    _presenter.loadUser();
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     controller.addListener(() {
@@ -59,6 +63,7 @@ class _HomePageState extends State<MyHomePage>
                   },
                 ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      drawer: CurrencyMenu(user: _user),
       extendBody: true,
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -135,4 +140,16 @@ class _HomePageState extends State<MyHomePage>
 
   @override
   void onLoadCryptoError() {}
+
+  @override
+  void onLoadUserComplete(User user) {
+    setState(() {
+      _user = user;
+    });
+  }
+
+  @override
+  void onLoadUserError() {
+    debugPrint("user hasn't laod");
+  }
 }

@@ -2,6 +2,10 @@ import '../bank.dart';
 
 abstract class User {
   final String name;
+  static User empty() {
+    return Client("");
+  }
+
   User(this.name);
 }
 
