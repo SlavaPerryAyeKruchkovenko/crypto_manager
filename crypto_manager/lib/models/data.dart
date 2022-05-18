@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 abstract class Data {
+  abstract final String name;
   final DateTime? date;
   final double value;
   Data({this.date, required this.value});
@@ -22,6 +23,9 @@ class Inflation extends Data {
     String superStr = super.toString();
     return superStr + "persent: $value";
   }
+
+  @override
+  final String name = "Inflation";
 }
 
 class Rate extends Data {
@@ -32,4 +36,7 @@ class Rate extends Data {
     String superStr = super.toString();
     return superStr + "course: $value";
   }
+
+  @override
+  final String name = "Rate";
 }

@@ -5,13 +5,17 @@ import 'data.dart';
 class Currency {
   String name;
   String shortName;
-  List<Inflation>? inflations;
+  final List<Inflation>? inflations;
   late List<Rate> rates;
-  List<Bank>? allowedBanks;
+  final List<Bank>? allowedBanks;
+  final List<Country>? allowedCountries;
   bool isFavorite;
 
   Currency(this.name, this.shortName, this.isFavorite,
-      {this.inflations, required this.rates, this.allowedBanks});
+      {this.inflations,
+      required this.rates,
+      this.allowedBanks,
+      this.allowedCountries});
 
   void like() {
     isFavorite = true;
@@ -25,5 +29,7 @@ class Currency {
       : name = map['name'],
         shortName = map['symbol'],
         inflations = null,
+        allowedCountries = null,
+        allowedBanks = null,
         isFavorite = map['like'];
 }
