@@ -43,7 +43,7 @@ class _HomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _getAppBar(),
+      appBar: _appBar,
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
@@ -76,7 +76,7 @@ class _HomePageState extends State<MyHomePage>
     );
   }
 
-  PreferredSizeWidget _getAppBar() {
+  PreferredSizeWidget get _appBar {
     return AppBar(title: const Text('Currency Converter'), actions: [
       IconButton(
         icon: const Icon(Icons.search),

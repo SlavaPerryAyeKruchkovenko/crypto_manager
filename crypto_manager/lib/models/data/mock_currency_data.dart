@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:crypto_manager/models/bank.dart';
 import 'package:crypto_manager/models/currency.dart';
+import 'package:crypto_manager/models/users/user.dart';
 
 import '../currency_repository.dart';
 import '../data.dart';
@@ -10,6 +11,12 @@ class MockCurrencyRepository implements CurrencyRepository {
   @override
   Future<List<Currency>> fetchCurrencies() {
     return Future.value(currencies);
+  }
+
+  @override
+  Future<User> fetchUser() {
+    // TODO: implement fetchUser
+    throw Future.value(Admin("Slava"));
   }
 }
 
@@ -30,8 +37,16 @@ final inf = [
 ];
 final allowedCountries = [
   Country(name: "Russia", shortName: "ru"),
-  Country(name: "United Kingdom", shortName: "ca"),
+  Country(name: "Canada", shortName: "ca"),
   Country(name: "Ukraine", shortName: 'ua'),
+  Country(name: "United kingdom", shortName: 'GB'),
+  Country(name: "Abkhazia", shortName: 'AB'),
+  Country(name: "Australia", shortName: 'Au'),
+  Country(name: "Andorra", shortName: 'Ad'),
+  Country(name: "Bulgaria", shortName: 'BG'),
+  Country(name: "Brazil", shortName: 'br'),
+  Country(name: "Germany", shortName: 'de'),
+  Country(name: "South Ossetia", shortName: 'OS'),
 ];
 var currencies = <Currency>[
   Currency("Bitcoin", "btc", true,

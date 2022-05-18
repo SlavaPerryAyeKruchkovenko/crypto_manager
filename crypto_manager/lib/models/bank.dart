@@ -4,8 +4,10 @@ class Bank {
   final String adress;
   final Country country;
   final List<Storage>? storagingCurrencies;
+  final String name;
 
-  Bank({required this.adress, required this.country, this.storagingCurrencies});
+  Bank(this.name,
+      {required this.adress, required this.country, this.storagingCurrencies});
 }
 
 class Country {

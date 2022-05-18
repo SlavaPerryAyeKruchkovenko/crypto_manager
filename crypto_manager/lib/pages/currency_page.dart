@@ -21,6 +21,7 @@ class _CurrencyPageState extends State<CurrencyPage> {
     //_isLoading = true;
   }
 
+  final _textStyle = const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
   int _index = 0;
   @override
   Widget build(BuildContext context) {
@@ -44,13 +45,23 @@ class _CurrencyPageState extends State<CurrencyPage> {
             ),
           ),
           SizedBox(
-            height: 300,
+            height: 400,
             child: (currency.allowedCountries ?? []).isEmpty
                 ? _getDataNotFound(currency, "allowed countries")
-                : Stack(
-                    children: _getFlags(currency.allowedCountries ?? []),
+                : Container(
+                    child: _getFlags(currency.allowedCountries ?? []),
+                    margin: const EdgeInsets.all(24.0),
                   ),
-          )
+          ),
+          SizedBox(
+            height: 400,
+            child: (currency.allowedBanks ?? []).isEmpty
+                ? _getDataNotFound(currency, "allowed banks")
+                : Container(
+                    child: _getBanks(currency.allowedBanks ?? []),
+                    margin: const EdgeInsets.all(24.0),
+                  ),
+          ),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -106,34 +117,70 @@ class _CurrencyPageState extends State<CurrencyPage> {
     return Center(
       child: Text(
         "no $text's $property data found",
-        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        style: _textStyle,
       ),
     );
   }
 
-  List<Widget> _getFlags(List<Country> countries) {
-    double left = 0;
+  Widget _getFlags(List<Country> countries) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            "Allowed Country",
+            style: _textStyle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: 8,
+            children: List.generate(countries.length, (index) {
+              final id = countries[index].shortName!.toLowerCase();
+              final country = countries[index].name.toUpperCase();
+              return Center(
+                child: Flag.flagsCode.contains(id)
+                    ? Flag.fromString(id)
+                    : Text(
+                        country,
+                        style: _textStyle,
+                        textAlign: TextAlign.center,
+                      ),
+              );
+            }),
+          ),
+        ),
+      ],
+    );
+  }
 
-    final flags = <Widget>[];
-    if (countries.isNotEmpty) {
-      for (var country in countries) {
-        if (country.shortName != null && country.shortName!.length == 2) {
-          flags.add(Positioned(
-              left: left,
-              child: Flag.fromString(
-                country.shortName!.toLowerCase(),
-                height: 30,
-                width: 30,
-              )));
-          left += 30;
-        } else {
-          flags.add(Text(
-            country.name,
-            style: const TextStyle(fontSize: 16),
-          ));
-        }
-      }
-    }
-    return flags;
+  Widget _getBanks(List<Bank> banks) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            "Allowed Country",
+            style: _textStyle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Expanded(
+            child: GridView.count(
+          crossAxisCount: 8,
+          children: List.generate(banks.length, (index) {
+            final bank = banks[index].name.toUpperCase();
+            return Center(
+              child: Text(
+                bank,
+                style: _textStyle,
+                textAlign: TextAlign.center,
+              ),
+            );
+          }),
+        )),
+      ],
+    );
   }
 }
