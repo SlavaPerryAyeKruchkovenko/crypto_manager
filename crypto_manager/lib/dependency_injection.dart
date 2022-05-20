@@ -1,6 +1,5 @@
 import 'models/currency_repository.dart';
 import 'models/data/mock_currency_data.dart';
-import 'models/users/user.dart';
 
 enum Flavor { mock, prod }
 

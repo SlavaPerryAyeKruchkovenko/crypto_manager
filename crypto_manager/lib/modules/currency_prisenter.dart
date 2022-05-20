@@ -1,3 +1,4 @@
+import 'package:crypto_manager/models/bank.dart';
 import 'package:crypto_manager/models/currency.dart';
 import 'package:crypto_manager/models/currency_repository.dart';
 import 'package:crypto_manager/models/users/user.dart';
@@ -9,6 +10,8 @@ abstract class CurrencyListViewContract {
   void onLoadCryptoError();
   void onLoadUserComplete(User user);
   void onLoadUserError();
+  void onLoadBanksComplete(List<Bank> banks);
+  void onLoadBanksError();
 }
 
 class CurrencyListPresenter {
@@ -31,4 +34,13 @@ class CurrencyListPresenter {
         .then((c) => _view.onLoadCryptoComplete(c))
         .catchError((onError) => _view.onLoadCryptoError());
   }
+
+  void loadBanks() {
+    _repository
+        .fetchBanks()
+        .then((x) => _view.onLoadBanksComplete(x))
+        .catchError((e) => _view.onLoadBanksError());
+  }
+
+  void updateData() {}
 }

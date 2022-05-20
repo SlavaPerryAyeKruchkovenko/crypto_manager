@@ -10,14 +10,34 @@ abstract class User {
 }
 
 class Admin extends User {
-  Admin(String name) : super(name);
+  static String password = "1234567";
+  Admin(
+    String name,
+  ) : super(name);
+
+  @override
+  String toString() {
+    return "Admin";
+  }
 }
 
 class BankAdmin extends User {
   final Bank bank;
   BankAdmin(String name, this.bank) : super(name);
+
+  @override
+  String toString() {
+    return "Bank admin";
+  }
 }
 
 class Client extends User {
-  Client(String name) : super(name);
+  Client(
+    String name,
+  ) : super(name);
+
+  @override
+  String toString() {
+    return "Client";
+  }
 }

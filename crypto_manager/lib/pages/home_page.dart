@@ -1,3 +1,4 @@
+import 'package:crypto_manager/models/bank.dart';
 import 'package:crypto_manager/models/users/user.dart';
 import 'package:crypto_manager/modules/search_delegates.dart';
 import 'package:crypto_manager/widgets/currency_widget.dart';
@@ -22,6 +23,7 @@ class _HomePageState extends State<MyHomePage>
   late CurrencyListPresenter _presenter;
   List<Currency> _currencies = List.empty();
   List<Currency> _usedCurrencies = List.empty();
+  List<Bank> _banks = List.empty();
   bool _isLoading = false;
   bool _isLikeClick = false;
   User _user = User.empty();
@@ -36,6 +38,7 @@ class _HomePageState extends State<MyHomePage>
     _isLoading = true;
     _presenter.loadCurrencies();
     _presenter.loadUser();
+    _presenter.loadBanks();
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     controller.addListener(() {
@@ -63,7 +66,10 @@ class _HomePageState extends State<MyHomePage>
                   },
                 ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      drawer: CurrencyMenu(user: _user),
+      drawer: CurrencyMenu(
+        user: _user,
+        banks: _banks,
+      ),
       extendBody: true,
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -76,7 +82,9 @@ class _HomePageState extends State<MyHomePage>
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.update),
-        onPressed: () {},
+        onPressed: () {
+          _presenter.updateData();
+        },
       ),
     );
   }
@@ -139,7 +147,9 @@ class _HomePageState extends State<MyHomePage>
   }
 
   @override
-  void onLoadCryptoError() {}
+  void onLoadCryptoError() {
+    debugPrint("currencies hasn't laod");
+  }
 
   @override
   void onLoadUserComplete(User user) {
@@ -151,5 +161,15 @@ class _HomePageState extends State<MyHomePage>
   @override
   void onLoadUserError() {
     debugPrint("user hasn't laod");
+  }
+
+  @override
+  void onLoadBanksComplete(List<Bank> banks) {
+    _banks = banks;
+  }
+
+  @override
+  void onLoadBanksError() {
+    debugPrint("banks hasn't laod");
   }
 }
