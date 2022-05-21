@@ -184,6 +184,7 @@ class _LoginFormState extends State<LoginForm> {
                   _role is BankAdmin ? _buildBank : const SizedBox.shrink()),
               _getFormField(
                   _role is Admin ? _buildPassword : const SizedBox.shrink()),
+              RaisedButton(onPressed: () {})
             ],
             mainAxisAlignment: MainAxisAlignment.start,
           ),
