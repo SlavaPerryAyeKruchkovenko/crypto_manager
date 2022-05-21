@@ -23,7 +23,7 @@ const _style2 = TextStyle(
 class _CurrencyMenuState extends State<CurrencyMenu> {
   @override
   Widget build(BuildContext context) {
-    final name = widget.banks.length;
+    final name = widget.user.name;
     return Drawer(
         child: ListView(
       children: [

@@ -52,16 +52,16 @@ class _LoginFormState extends State<LoginForm> {
         });
       },
       icon: const Icon(Icons.arrow_downward),
+      itemHeight: 80,
       items: roles
           .map((x) => x.toString())
           .map<DropdownMenuItem<String>>(
               (String value) => DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ))
+                  value: value,
+                  child: Padding(
+                    child: Text(value, style: const TextStyle(fontSize: 24)),
+                    padding: const EdgeInsets.all(24),
+                  )))
           .toList(),
     );
   }
@@ -69,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
   Widget get _buildPassword {
     return TextFormField(
       maxLength: 30,
-      obscureText: _isVisible,
+      obscureText: !_isVisible,
       decoration: InputDecoration(
         labelText: "Password",
         suffixIcon: IconButton(
@@ -101,8 +101,8 @@ class _LoginFormState extends State<LoginForm> {
   Widget get _buildName {
     return TextFormField(
       maxLength: 30,
-      decoration:
-          const InputDecoration(labelText: "Name", icon: Icon(Icons.person)),
+      decoration: const InputDecoration(
+          labelText: "Name", suffixIcon: Icon(Icons.person)),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return "Name is Required";
@@ -127,8 +127,14 @@ class _LoginFormState extends State<LoginForm> {
     }
 
     return widget.banks.isEmpty
-        ? const Center(child: Text("Active banks not found"))
+        ? const Center(
+            child: Text(
+            "Active banks not found",
+            style: TextStyle(fontSize: 24),
+          ))
         : DropdownButton(
+            itemHeight: 80,
+            alignment: Alignment.center,
             value: _bank.toString(),
             onChanged: (String? value) {
               setState(() {
@@ -142,14 +148,21 @@ class _LoginFormState extends State<LoginForm> {
                 .map((x) => x.toString())
                 .map<DropdownMenuItem<String>>(
                     (String value) => DropdownMenuItem<String>(
-                          value: value,
+                        value: value,
+                        child: Padding(
                           child: Text(
                             value,
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(fontSize: 24),
                           ),
-                        ))
+                          padding: const EdgeInsets.all(24),
+                        )))
                 .toList(),
           );
+  }
+
+  Widget _getFormField(Widget child) {
+    return Center(
+        child: Padding(padding: const EdgeInsets.all(24.0), child: child));
   }
 
   @override
@@ -165,18 +178,14 @@ class _LoginFormState extends State<LoginForm> {
           key: _formKey,
           child: Column(
             children: [
-              Center(child: _buildName),
-              Center(child: _buildRole),
-              Center(
-                  child: _role is BankAdmin
-                      ? _buildBank
-                      : const SizedBox.shrink()),
-              Center(
-                child:
-                    _role is Admin ? _buildPassword : const SizedBox.shrink(),
-              ),
+              _getFormField(_buildName),
+              _getFormField(_buildRole),
+              _getFormField(
+                  _role is BankAdmin ? _buildBank : const SizedBox.shrink()),
+              _getFormField(
+                  _role is Admin ? _buildPassword : const SizedBox.shrink()),
             ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
           ),
         ),
       ),

@@ -51,20 +51,7 @@ class _HomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar,
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                value: controller.value,
-              ),
-            )
-          : _usedCurrencies.isEmpty
-              ? _getNotFoundResult()
-              : ListView.builder(
-                  itemCount: _usedCurrencies.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _getRowWithDivider(index);
-                  },
-                ),
+      body: _body,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       drawer: CurrencyMenu(
         user: _user,
@@ -134,6 +121,23 @@ class _HomePageState extends State<MyHomePage>
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );
+  }
+
+  Widget get _body {
+    return _isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              value: controller.value,
+            ),
+          )
+        : _usedCurrencies.isEmpty
+            ? _getNotFoundResult()
+            : ListView.builder(
+                itemCount: _usedCurrencies.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _getRowWithDivider(index);
+                },
+              );
   }
 
   @override
