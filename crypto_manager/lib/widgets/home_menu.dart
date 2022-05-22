@@ -1,12 +1,19 @@
 import 'package:crypto_manager/models/bank.dart';
+import 'package:crypto_manager/models/currency.dart';
 import 'package:crypto_manager/models/users/user.dart';
+import 'package:crypto_manager/pages/convert_page.dart';
 import 'package:crypto_manager/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyMenu extends StatefulWidget {
   final User user;
   final List<Bank> banks;
-  const CurrencyMenu({Key? key, required this.user, required this.banks})
+  final List<Currency> currencies;
+  const CurrencyMenu(
+      {Key? key,
+      required this.user,
+      required this.banks,
+      required this.currencies})
       : super(key: key);
 
   @override
@@ -61,7 +68,14 @@ class _CurrencyMenuState extends State<CurrencyMenu> {
             'Convert currency',
             style: _style2,
           ),
-          onTap: () => {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ConvertPage(
+                          currencies: widget.currencies,
+                        )));
+          },
         ),
         ListTile(
           leading: const Icon(

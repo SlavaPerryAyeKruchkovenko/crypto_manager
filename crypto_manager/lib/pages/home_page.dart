@@ -56,6 +56,7 @@ class _HomePageState extends State<MyHomePage>
       drawer: CurrencyMenu(
         user: _user,
         banks: _banks,
+        currencies: _currencies,
       ),
       extendBody: true,
       bottomNavigationBar: BottomAppBar(
