@@ -1,5 +1,8 @@
+import 'package:crypto_manager/models/bank.dart';
+import 'package:crypto_manager/models/users/user.dart';
 import 'package:crypto_manager/modules/search_delegates.dart';
 import 'package:crypto_manager/widgets/currency_widget.dart';
+import 'package:crypto_manager/widgets/home_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -20,8 +23,10 @@ class _HomePageState extends State<MyHomePage>
   late CurrencyListPresenter _presenter;
   List<Currency> _currencies = List.empty();
   List<Currency> _usedCurrencies = List.empty();
+  List<Bank> _banks = List.empty();
   bool _isLoading = false;
   bool _isLikeClick = false;
+  User _user = User.empty();
   late AnimationController controller;
   _HomePageState() {
     _presenter = CurrencyListPresenter(this);
@@ -32,6 +37,8 @@ class _HomePageState extends State<MyHomePage>
     super.initState();
     _isLoading = true;
     _presenter.loadCurrencies();
+    _presenter.loadUser();
+    _presenter.loadBanks();
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     controller.addListener(() {
@@ -44,21 +51,12 @@ class _HomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar,
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                value: controller.value,
-              ),
-            )
-          : _usedCurrencies.isEmpty
-              ? _getNotFoundResult()
-              : ListView.builder(
-                  itemCount: _usedCurrencies.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _getRowWithDivider(index);
-                  },
-                ),
+      body: _body,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      drawer: CurrencyMenu(
+        user: _user,
+        banks: _banks,
+      ),
       extendBody: true,
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -71,7 +69,9 @@ class _HomePageState extends State<MyHomePage>
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.update),
-        onPressed: () {},
+        onPressed: () {
+          _presenter.updateData();
+        },
       ),
     );
   }
@@ -123,6 +123,23 @@ class _HomePageState extends State<MyHomePage>
     );
   }
 
+  Widget get _body {
+    return _isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              value: controller.value,
+            ),
+          )
+        : _usedCurrencies.isEmpty
+            ? _getNotFoundResult()
+            : ListView.builder(
+                itemCount: _usedCurrencies.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _getRowWithDivider(index);
+                },
+              );
+  }
+
   @override
   void onLoadCryptoComplete(List<Currency> items) {
     setState(() {
@@ -134,5 +151,29 @@ class _HomePageState extends State<MyHomePage>
   }
 
   @override
-  void onLoadCryptoError() {}
+  void onLoadCryptoError() {
+    debugPrint("currencies hasn't laod");
+  }
+
+  @override
+  void onLoadUserComplete(User user) {
+    setState(() {
+      _user = user;
+    });
+  }
+
+  @override
+  void onLoadUserError() {
+    debugPrint("user hasn't laod");
+  }
+
+  @override
+  void onLoadBanksComplete(List<Bank> banks) {
+    _banks = banks;
+  }
+
+  @override
+  void onLoadBanksError() {
+    debugPrint("banks hasn't laod");
+  }
 }

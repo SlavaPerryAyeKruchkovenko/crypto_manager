@@ -24,8 +24,7 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
   }
 
   Widget _getCurrienceImage() {
-    widget.currency.rates.sort((x, y) => y.date!.compareTo(x.date!));
-    final rate = widget.currency.rates.first;
+    final rate = widget.currency.lastRate;
 
     var text = rate.toString();
     return ListTile(

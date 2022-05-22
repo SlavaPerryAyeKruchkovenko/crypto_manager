@@ -9,13 +9,17 @@ class Currency {
   late List<Rate> rates;
   final List<Bank>? allowedBanks;
   final List<Country>? allowedCountries;
+  late final Rate lastRate;
   bool isFavorite;
 
   Currency(this.name, this.shortName, this.isFavorite,
       {this.inflations,
       required this.rates,
       this.allowedBanks,
-      this.allowedCountries});
+      this.allowedCountries}) {
+    rates.sort((x, y) => y.date!.compareTo(x.date!));
+    lastRate = rates.first;
+  }
 
   void like() {
     isFavorite = true;
@@ -31,5 +35,6 @@ class Currency {
         inflations = null,
         allowedCountries = null,
         allowedBanks = null,
-        isFavorite = map['like'];
+        isFavorite = map['like'],
+        lastRate = map['rate'];
 }
