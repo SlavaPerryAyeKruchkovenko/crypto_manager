@@ -14,7 +14,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   List<User> roles = List.empty();
   String _name = "";
-  String _password = "";
+
   Bank _bank = Bank.empty();
   User _role = User.empty();
   bool _isVisible = false;
@@ -29,19 +29,19 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  Widget get _buildRole {
-    User _getRole(String? value) {
-      switch (value) {
-        case "Client":
-          return Client(_name);
-        case "Bank admin":
-          return BankAdmin(_name, _bank);
-        case "Admin":
-          return Admin(_name);
-      }
-      return User.empty();
+  User _getRole(String? value) {
+    switch (value) {
+      case "Client":
+        return Client(_name);
+      case "Bank admin":
+        return BankAdmin(_name, _bank);
+      case "Admin":
+        return Admin(_name);
     }
+    return User.empty();
+  }
 
+  Widget get _buildRole {
     return DropdownButton(
       value: _role.toString(),
       onChanged: (String? value) {
@@ -90,11 +90,7 @@ class _LoginFormState extends State<LoginForm> {
         }
         return null;
       },
-      onSaved: (newValue) => {
-        setState(() {
-          _password = newValue!;
-        })
-      },
+      onSaved: (newValue) => {},
     );
   }
 
@@ -190,6 +186,9 @@ class _LoginFormState extends State<LoginForm> {
                     return;
                   }
                   _formKey.currentState!.save();
+                  _role = _getRole(_role.toString());
+
+                  Navigator.pop(context, _role);
                 },
                 child: const Padding(
                   child: Text(

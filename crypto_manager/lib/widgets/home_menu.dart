@@ -21,9 +21,25 @@ const _style2 = TextStyle(
 );
 
 class _CurrencyMenuState extends State<CurrencyMenu> {
+  late User _user;
+  Future<User> _logInUser(BuildContext context) async {
+    return await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LoginForm(
+                  banks: widget.banks,
+                )));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.user;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final name = widget.user.name;
+    final name = _user.name;
     return Drawer(
         child: ListView(
       children: [
@@ -53,13 +69,10 @@ class _CurrencyMenuState extends State<CurrencyMenu> {
             color: Colors.blue,
           ),
           title: const Text('Change acount', style: _style2),
-          onTap: () => {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => LoginForm(
-                          banks: widget.banks,
-                        )))
+          onTap: () {
+            setState(() async {
+              _user = await _logInUser(context);
+            });
           },
         ),
       ],
