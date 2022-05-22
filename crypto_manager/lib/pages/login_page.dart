@@ -184,7 +184,24 @@ class _LoginFormState extends State<LoginForm> {
                   _role is BankAdmin ? _buildBank : const SizedBox.shrink()),
               _getFormField(
                   _role is Admin ? _buildPassword : const SizedBox.shrink()),
-              RaisedButton(onPressed: () {})
+              ElevatedButton(
+                onPressed: () {
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+                  _formKey.currentState!.save();
+                },
+                child: const Padding(
+                  child: Text(
+                    "Confirm",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  padding: EdgeInsets.all(24.0),
+                ),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue)),
+              )
             ],
             mainAxisAlignment: MainAxisAlignment.start,
           ),
