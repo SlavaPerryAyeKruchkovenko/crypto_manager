@@ -15,11 +15,19 @@ class MockCurrencyRepository implements CurrencyRepository {
 
   @override
   Future<User> fetchUser() {
-    // TODO: implement fetchUser
-    throw Future.value(Admin("Slava"));
+    return Future.value(Admin("Slava"));
+  }
+
+  @override
+  Future<List<Bank>> fetchBanks() {
+    return Future.value(banks);
   }
 }
 
+final banks = [
+  Bank("Sber", adress: "moscow", country: allowedCountries[0]),
+  Bank("Alfa", adress: "moscow", country: allowedCountries[0]),
+];
 final date1 = DateTime(2021, 6, 12, 7);
 final date2 = DateTime(2021, 12, 7, 16);
 final date3 = DateTime(2022, 2, 18, 23);
