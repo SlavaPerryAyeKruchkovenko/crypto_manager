@@ -36,7 +36,10 @@ class MySearchDelegates extends SearchDelegate {
       itemCount: currencies.length,
       itemBuilder: (BuildContext context, int index) {
         final currency = currencies[index];
-        return CurrencyWidget(currency: currency);
+        return CurrencyWidget(
+          currency: currency,
+          currencies: currencies,
+        );
       },
     );
   }

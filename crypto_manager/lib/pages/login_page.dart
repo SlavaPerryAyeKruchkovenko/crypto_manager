@@ -161,13 +161,17 @@ class _LoginFormState extends State<LoginForm> {
         child: Padding(padding: const EdgeInsets.all(24.0), child: child));
   }
 
+  AppBar get _appBar {
+    return AppBar(
+        title: const Center(
+      child: Text('Login Form'),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Center(
-        child: Text('Login Form'),
-      )),
+      appBar: _appBar,
       body: Container(
         margin: const EdgeInsets.all(16),
         child: Form(

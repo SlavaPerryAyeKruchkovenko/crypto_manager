@@ -56,6 +56,7 @@ class _HomePageState extends State<MyHomePage>
       drawer: CurrencyMenu(
         user: _user,
         banks: _banks,
+        currencies: _currencies,
       ),
       extendBody: true,
       bottomNavigationBar: BottomAppBar(
@@ -111,7 +112,10 @@ class _HomePageState extends State<MyHomePage>
 
   Widget _getRowWithDivider(int i) {
     final Currency currency = _usedCurrencies[i];
-    return CurrencyWidget(currency: currency);
+    return CurrencyWidget(
+      currency: currency,
+      currencies: _currencies,
+    );
   }
 
   Widget _getNotFoundResult() {

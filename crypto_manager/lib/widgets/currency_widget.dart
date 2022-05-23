@@ -5,7 +5,10 @@ import 'package:flutter/widgets.dart';
 
 class CurrencyWidget extends StatefulWidget {
   final Currency currency;
-  const CurrencyWidget({Key? key, required this.currency}) : super(key: key);
+  final List<Currency> currencies;
+  const CurrencyWidget(
+      {Key? key, required this.currency, required this.currencies})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CurrencyWidgetState();
@@ -34,6 +37,7 @@ class _CurrencyWidgetState extends State<CurrencyWidget> {
             MaterialPageRoute(
                 builder: (context) => CurrencyPage(
                       currency: widget.currency,
+                      currencies: widget.currencies,
                     )))
       },
       leading: FadeInImage.assetNetwork(
