@@ -112,7 +112,10 @@ class _HomePageState extends State<MyHomePage>
 
   Widget _getRowWithDivider(int i) {
     final Currency currency = _usedCurrencies[i];
-    return CurrencyWidget(currency: currency);
+    return CurrencyWidget(
+      currency: currency,
+      currencies: _currencies,
+    );
   }
 
   Widget _getNotFoundResult() {
