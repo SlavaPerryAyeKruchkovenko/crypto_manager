@@ -21,13 +21,20 @@ class _CurrencyPageState extends State<CurrencyPage> {
   //bool _isLoading = false;
   late Currency _nextCurrency;
   double _price1 = 0;
-  double _price2 = 0;
-  final _controller = TextEditingController();
+  final _controller1 = TextEditingController();
+  final _controller2 = TextEditingController();
   @override
   void initState() {
     super.initState();
     _nextCurrency = widget.currencies.first;
     //_isLoading = true;
+  }
+
+  double _countRate(double value, TextEditingController controller,
+      Currency cur1, Currency cur2) {
+    var price = value * cur1.lastRate.value / cur2.lastRate.value;
+    controller.text = price.toString();
+    return price;
   }
 
   final _textStyle = const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
@@ -51,12 +58,17 @@ class _CurrencyPageState extends State<CurrencyPage> {
                       _image,
                       _getTextField((p) {
                         _price1 = p;
-                        _price2 = _price1 / _price2;
-                        _controller.text = _price2.toString();
-                      }, currency),
-                      _getCurrenciesMenu(
-                          _nextCurrency, (value) => _nextCurrency = value),
-                      _getTextField((p) => _price2 = p, _nextCurrency)
+                        _countRate(p, _controller2, currency, _nextCurrency);
+                      }, currency, _controller1),
+                      _getCurrenciesMenu(_nextCurrency, (value) {
+                        _nextCurrency = value;
+                        _countRate(
+                            _price1, _controller2, currency, _nextCurrency);
+                      }),
+                      _getTextField((p) {
+                        _price1 = _countRate(
+                            p, _controller1, _nextCurrency, currency);
+                      }, _nextCurrency, _controller2)
                     ],
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   ),
@@ -194,10 +206,11 @@ class _CurrencyPageState extends State<CurrencyPage> {
     );
   }
 
-  Widget _getTextField(Function(double) func, Currency currency) {
+  Widget _getTextField(Function(double) func, Currency currency,
+      TextEditingController? controller) {
     return Expanded(
       child: TextField(
-        controller: _controller,
+        controller: controller,
         decoration: InputDecoration(
           labelText: currency.name,
           hintText: "rate",
