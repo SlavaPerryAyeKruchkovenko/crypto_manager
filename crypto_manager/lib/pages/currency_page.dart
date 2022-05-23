@@ -23,18 +23,30 @@ class _CurrencyPageState extends State<CurrencyPage> {
   double _price1 = 0;
   final _controller1 = TextEditingController();
   final _controller2 = TextEditingController();
+  List<Rate> rates = [];
   @override
   void initState() {
     super.initState();
     _nextCurrency = widget.currencies.first;
+    rates = widget.currency.rates;
     //_isLoading = true;
   }
 
-  double _countRate(double value, TextEditingController controller,
-      Currency cur1, Currency cur2) {
+  double _countRate(Currency cur1, Currency cur2, {double value = 1}) {
     var price = value * cur1.lastRate.value / cur2.lastRate.value;
-    controller.text = price.toString();
+
     return price;
+  }
+
+  List<Rate> _countRates(Currency mainCur, Currency convertCur) {
+    List<Rate> rates = [];
+    for (var rate in mainCur.rates) {
+      final value = rate.value / mainCur.lastRate.value;
+      rates.add(Rate(
+          course: _countRate(mainCur, convertCur, value: value),
+          date: rate.date));
+    }
+    return rates;
   }
 
   final _textStyle = const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
@@ -58,16 +70,19 @@ class _CurrencyPageState extends State<CurrencyPage> {
                       _image,
                       _getTextField((p) {
                         _price1 = p;
-                        _countRate(p, _controller2, currency, _nextCurrency);
+                        var val = _countRate(currency, _nextCurrency, value: p);
+                        _controller2.text = val.toString();
                       }, currency, _controller1),
                       _getCurrenciesMenu(_nextCurrency, (value) {
                         _nextCurrency = value;
-                        _countRate(
-                            _price1, _controller2, currency, _nextCurrency);
+                        var val =
+                            _countRate(currency, _nextCurrency, value: _price1);
+                        _controller2.text = val.toString();
+                        rates = _countRates(currency, _nextCurrency);
                       }),
                       _getTextField((p) {
-                        _price1 = _countRate(
-                            p, _controller1, _nextCurrency, currency);
+                        _price1 = _countRate(_nextCurrency, currency, value: p);
+                        _controller1.text = _price1.toString();
                       }, _nextCurrency, _controller2)
                     ],
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -83,7 +98,7 @@ class _CurrencyPageState extends State<CurrencyPage> {
               children: [
                 currency.rates.isEmpty
                     ? _getDataNotFound(currency, "rates")
-                    : _getChart(currency.rates),
+                    : _getChart(rates),
                 currency.inflations == null || currency.inflations!.isEmpty
                     ? _getDataNotFound(currency, "inflations")
                     : _getChart(currency.inflations!),
