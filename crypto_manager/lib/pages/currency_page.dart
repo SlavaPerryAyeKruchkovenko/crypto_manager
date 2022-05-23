@@ -60,7 +60,7 @@ class _CurrencyPageState extends State<CurrencyPage> {
       body: ListView(
         children: [
           SizedBox(
-            height: 150,
+            height: 250,
             child: Padding(
               padding: _padding,
               child: Column(
@@ -73,20 +73,22 @@ class _CurrencyPageState extends State<CurrencyPage> {
                         var val = _countRate(currency, _nextCurrency, value: p);
                         _controller2.text = val.toString();
                       }, currency, _controller1),
-                      _getCurrenciesMenu(_nextCurrency, (value) {
-                        _nextCurrency = value;
-                        var val =
-                            _countRate(currency, _nextCurrency, value: _price1);
-                        _controller2.text = val.toString();
-                        rates = _countRates(currency, _nextCurrency);
-                      }),
-                      _getTextField((p) {
-                        _price1 = _countRate(_nextCurrency, currency, value: p);
-                        _controller1.text = _price1.toString();
-                      }, _nextCurrency, _controller2)
                     ],
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   ),
+                  Row(children: [
+                    _getCurrenciesMenu(_nextCurrency, (value) {
+                      _nextCurrency = value;
+                      var val =
+                          _countRate(currency, _nextCurrency, value: _price1);
+                      _controller2.text = val.toString();
+                      rates = _countRates(currency, _nextCurrency);
+                    }),
+                    _getTextField((p) {
+                      _price1 = _countRate(_nextCurrency, currency, value: p);
+                      _controller1.text = _price1.toString();
+                    }, _nextCurrency, _controller2)
+                  ], mainAxisAlignment: MainAxisAlignment.spaceEvenly)
                 ],
               ),
             ),
@@ -247,7 +249,7 @@ class _CurrencyPageState extends State<CurrencyPage> {
 
   Widget get _image {
     return Padding(
-      padding: _padding,
+      padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
       child: FadeInImage.assetNetwork(
           height: 50,
           width: 50,
