@@ -18,7 +18,7 @@ class _BanksGridState extends State<BanksGrid> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Allowed Country",
+            "Allowed Banks",
             style: _textStyle,
             textAlign: TextAlign.center,
           ),

@@ -58,7 +58,10 @@ final allowedCountries = [
 ];
 var currencies = <Currency>[
   Currency("Bitcoin", "btc", true,
-      rates: rates, inflations: inf, allowedCountries: allowedCountries),
+      rates: rates,
+      inflations: inf,
+      allowedCountries: allowedCountries,
+      allowedBanks: banks),
   Currency("Ethereum", "eth", true, rates: [
     Rate(date: DateTime.now(), course: 14.88),
   ]),
