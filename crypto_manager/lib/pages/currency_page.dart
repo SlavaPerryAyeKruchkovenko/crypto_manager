@@ -34,7 +34,6 @@ class _CurrencyPageState extends State<CurrencyPage> {
 
   double _countRate(Currency cur1, Currency cur2, {double value = 1}) {
     var price = value * cur1.lastRate.value / cur2.lastRate.value;
-
     return price;
   }
 
